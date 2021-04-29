@@ -23,7 +23,7 @@ which clang
 ret=$?
 if [ $ret -eq 0 ]; then
   CLANG_VERSION=$(clang --version | awk 'NR<2 { print $3 }' | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}')
-  if [ $CLANG_VERSION -eq "110001" ]; then
+  if [ $CLANG_VERSION -eq "120000" ]; then
     echo "You have already had LLVM-12.0.0."
     echo "Skip installation. Program exit."
     exit
