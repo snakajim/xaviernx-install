@@ -57,7 +57,19 @@ else
 fi
 
 #
-# install LLVM 1101
+# Update CMake > 3.15
+#
+CMAKE_VERSION=$(cmake --version | awk 'NR<2 { print $3 }' | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}')
+if [ $CMAKE_VERSION -lt "31500" ]; then
+  echo "-------------------------------------------------------------"
+  echo "Your cmake is too old to compile LLVM-12.0.0. Let's renew it."
+  echo "-------------------------------------------------------------"
+  cd ${HOME}/tmp && aria2c -x10 https://github.com/Kitware/CMake/releases/download/v3.20.1/cmake-3.20.1.tar.gz
+  cd ${HOME}/tmp && tar zxvf cmake-3.20.1.tar.gz
+  cd ${HOME}/tmp/cmake-3.20.1 && ./bootstrap && make -j${CPU} && sudo make install
+fi
+#
+# install LLVM 1200
 #
 cd ${HOME}/tmp && rm -rf llvm*
 cd ${HOME}/tmp && git clone --depth 1 https://github.com/llvm/llvm-project.git -b llvmorg-12.0.0 && \

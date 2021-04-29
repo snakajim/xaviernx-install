@@ -8,6 +8,18 @@
 # make sure you have set your keyboard. 
 # $> sudo dpkg-reconfigure keyboard-configuration
 #
+
+#
+# Before running this sript, recommeding you have set NVMe in the board.
+# https://www.jetsonhacks.com/2020/05/29/jetson-xavier-nx-run-from-ssd/
+#
+# fdisk(make primary linux disk) and mkfs -t ext4 for nvme, then
+# $> git clone https://github.com/jetsonhacks/rootOnNVMe
+# $> cd rootOnNVMe 
+# $> ./copy-rootfs-ssd.sh
+# $> ./setup-service.sh
+#
+
 apt-get update -y
 iam=`echo ${USER}`
 if [ $iam != "root" ]; then
@@ -37,7 +49,7 @@ fi
 
 apt-get install -y default-jre default-jdk
 apt-get install -y curl cmake ninja-build z3 sudo
-apt-get install -y firewalld
+apt-get install -y firewalld libssl-dev
 apt-get install -y autoconf flex bison apt-utils
 apt-get install -y python3 python3-dev python3-pip
 apt-get install -y x11-apps at
