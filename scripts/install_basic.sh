@@ -21,6 +21,7 @@
 #
 
 apt-get update -y
+apt-get upgrade -y
 iam=`echo ${USER}`
 if [ $iam != "root" ]; then
   echo "i am not root, please exec me in root."
@@ -60,18 +61,18 @@ apt-get install -y avahi-daemon avahi-utils
 apt-get install -y scons libomp-dev evince time hwinfo
 apt-get install -y gcc-7 g++-7
 apt-get install -y gcc-8 g++-8
-
-#gpasswd -a $USER docker
-#chmod 666 /var/run/docker.sock
+# In JetPack, Docker is installed by default.
+gpasswd -a $USER docker
+chmod 666 /var/run/docker.sock
 sleep 10
 #
 # addgroup wheel and grant sudo authority
 #
 addgroup wheel
-gpasswd -a xavier wheel
-gpasswd -a xavier sudo
-echo "# Privilege specification for xavier" >> /etc/sudoers
-echo "xavier    ALL=NOPASSWD: ALL" >> /etc/sudoers
+gpasswd -a $USER wheel
+gpasswd -a $USER sudo
+echo "# Privilege specification for $USER" >> /etc/sudoers
+echo "$USER    ALL=NOPASSWD: ALL" >> /etc/sudoers
 sed -i -E \
   's/\#\s+auth\s+required\s+pam_wheel\.so$/auth      required      pam_wheel\.so group=wheel/' \
   /etc/pam.d/su
@@ -152,7 +153,7 @@ timedatectl set-timezone Asia/Tokyo --no-ask-password
 hwinfo | grep -i tegra
 ret=$?
 if [ $ret -eq 0 ]; then
-  echo "xavier is detected."
+  echo "tegra HW is detected."
   hostnamectl set-hostname Xavierarmkk
 fi
 #
