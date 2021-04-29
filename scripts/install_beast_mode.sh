@@ -9,6 +9,8 @@
 # $> ./install_east_mode.sh default
 #
 
+push d
+
 if [ $# -gt 2 ]; then
   echo "Bad argument."
   echo "Number of args should be 1, but $#."
@@ -24,7 +26,8 @@ if [ $# = 0 ] || [ $1 == "beast" ]; then
   cat available_frequencies
   sudo sh -c "echo 114750000 > max_freq"
   sudo /usr/bin/jetson_clocks
-  echo "Your setting is now"
+  echo ""
+  echo "Your setting is now,"
   sudo /usr/bin/jetson_clocks --show
   sudo /usr/sbin/nvpmodel -d cool
   sudo /usr/sbin/nvpmodel -q
@@ -36,7 +39,8 @@ else
     sudo sh -c "echo 1109250000 > max_freq"
     cd /sys/devices/17000000.gv11b/devfreq/17000000.gv11b
     sudo sh -c "echo 1109250000 > max_freq"
-    echo "Your setting is now"
+    echo ""
+    echo "Your setting is now,"
     sudo /usr/bin/jetson_clocks --show
   else
     echo "Bad argument."
@@ -44,3 +48,5 @@ else
     exit 1
   fi
 fi
+
+pop d
