@@ -127,27 +127,12 @@ if [ -f /usr/local/llvm_1200/bin/lld ]; then
   sudo rm /usr/bin/ld
   sudo ln -s /usr/local/llvm_1200/bin/lld /usr/bin/ld
   echo "/usr/bin/ld is replaced by lld."
+  sudo ldconfig -v
 else
   echo "ERROR : lld not found under /usr/local/llvm_1200/bin/"
   echo "ERROR : Please check if your llvm build is ok. Program exit."
   exit
 fi
 
-# ------------------------------------------------------
-# Refresh your shell and check your clang version again
-# ------------------------------------------------------
-exec $SHELL -l
-sudo ldconfig -v
-CLANG_VERSION=$(/usr/local/llvm_1200/bin/clang --version | awk 'NR<2 { print $3 }' | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}')
-if [ $CLANG_VERSION -eq "120000" ]; then
-  echo "You have LLVM-12.0.0 under /usr/local/llvm_1200/."
-  echo "Conguraturations."
-  echo "LLVM compile & install done."
-  date
-  exit
-else
-  echo "ERROR: Some issues. LLVM-12.00 was not successfully built."
-  echo "ERROR: Please check build log. Program exit"
-  date
-  exit
-fi
+echo "install_llvm.sh completed."
+date
