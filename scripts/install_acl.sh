@@ -8,6 +8,9 @@ ARCH=`arch`
 CPU=`nproc --all`
 source ${HOME}/.bashrc
 
+export CXX="/usr/bin/g++-8"
+export CC="/usr/bin/gcc-8"
+
 # Downlaod and install
 #
 ACL_ROOT_DIR=${HOME}/work
@@ -37,7 +40,8 @@ if [ ! -d $ACL_ROOT_DIR/gcc/ComputeLibrary ]; then
   mkdir -p $ACL_ROOT_DIR/gcc
   cd $ACL_ROOT_DIR/gcc
   if [ ! -d $ACL_ROOT_DIR/gcc/ComputeLibrary ]; then
-    git clone https://github.com/ARM-software/ComputeLibrary.git -b v21.02
+    #git clone https://github.com/ARM-software/ComputeLibrary.git -b v21.02
+    git clone https://github.com/ARM-software/ComputeLibrary.git -b v20.11
   fi
 fi
 
@@ -54,7 +58,8 @@ if [ $ret -eq 0 ] && [ $isDefault -eq "0" ]; then
   echo "setting ${CXX} as \$CXX"
   cd $ACL_ROOT_DIR/llvm
   if [ ! -d $ACL_ROOT_DIR/llvm/ComputeLibrary ]; then
-    git clone https://github.com/ARM-software/ComputeLibrary.git -b v21.02
+    #git clone https://github.com/ARM-software/ComputeLibrary.git -b v21.02
+    git clone https://github.com/ARM-software/ComputeLibrary.git -b v20.11
   fi
   cd $ACL_ROOT_DIR/llvm/ComputeLibrary
 
