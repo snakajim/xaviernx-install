@@ -104,7 +104,7 @@ elif [ $OSNOW = "CENTOS" ]; then
 else
   echo "please set right choise in OS=$OSNOW.."
 fi
-echo "end LLVM1101 build"
+echo "end llvm_1200 build"
 date
 make clean
 
