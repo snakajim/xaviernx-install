@@ -136,3 +136,6 @@ fi
 
 echo "install_llvm.sh completed."
 date
+echo ""
+echo ""
+echo ""

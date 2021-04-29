@@ -136,3 +136,6 @@ echo "disassemble done. Please find ComputeLibrary/build/*.disasm files."
 
 #
 echo "end of script."
+echo ""
+echo ""
+echo ""
