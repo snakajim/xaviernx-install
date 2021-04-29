@@ -36,9 +36,12 @@ else
   echo "Proceed LLVM-12.0.0 install."
 fi
 
-sudo apt install -y clang
-export CXX="/usr/bin/clang++"
-export CC="/usr/bin/clang"
+#sudo apt install -y clang
+#export CXX="/usr/bin/clang++"
+#export CC="/usr/bin/clang"
+export CXX="/usr/bin/g++-7"
+export CC="/usr/bin/gcc-7"
+
 
 # ---------------------------
 # Confirm which OS you are in 
@@ -67,6 +70,10 @@ if [ $CMAKE_VERSION -lt "31500" ]; then
   cd ${HOME}/tmp && aria2c -x10 https://github.com/Kitware/CMake/releases/download/v3.20.1/cmake-3.20.1.tar.gz
   cd ${HOME}/tmp && tar zxvf cmake-3.20.1.tar.gz
   cd ${HOME}/tmp/cmake-3.20.1 && ./bootstrap && make -j${CPU} && sudo make install
+else
+  echo "-------------------------------------------------------------"
+  echo "cmake is already the new version."
+  echo "-------------------------------------------------------------"
 fi
 #
 # install LLVM 1200
@@ -74,7 +81,7 @@ fi
 cd ${HOME}/tmp && rm -rf llvm*
 cd ${HOME}/tmp && git clone --depth 1 https://github.com/llvm/llvm-project.git -b llvmorg-12.0.0 && \
   cd llvm-project && mkdir -p build && cd build
-echo "start LLVM1101 build"
+echo "start llvm_1200 build"
 date
 if [ $OSNOW = "UBUNTU" ] ||  [ $OSNOW = "DEBIAN" ]; then 
   cmake -G Ninja -G "Unix Makefiles"\
