@@ -9,7 +9,7 @@
 # $> ./install_east_mode.sh default
 #
 
-push d
+pushd
 
 if [ $# -gt 2 ]; then
   echo "Bad argument."
@@ -49,4 +49,4 @@ else
   fi
 fi
 
-pop d
+popd
