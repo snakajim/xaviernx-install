@@ -9,7 +9,7 @@
 # $> ./install_east_mode.sh default
 #
 
-pushd
+pushd ${PWD}
 
 if [ $# -gt 2 ]; then
   echo "Bad argument."
