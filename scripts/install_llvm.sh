@@ -36,7 +36,6 @@ else
   echo "Proceed LLVM-12.0.0 install."
 fi
 
-#sudo apt install -y clang
 #export CXX="/usr/bin/clang++"
 #export CC="/usr/bin/clang"
 export CXX="/usr/bin/g++-7"
@@ -89,8 +88,11 @@ if [ $OSNOW = "UBUNTU" ] ||  [ $OSNOW = "DEBIAN" ]; then
     -DCMAKE_CXX_COMPILER=$CXX \
     -DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lld;openmp" \
     -DCMAKE_BUILD_TYPE=RELEASE \
-    -DLLVM_TARGETS_TO_BUILD="ARM;AArch64" \
+    -DLLVM_TARGETS_TO_BUILD="AArch64" \
     -DCMAKE_INSTALL_PREFIX="/usr/local/llvm_1200" \
+    -DLLVM_ENABLE_CLASSIC_FLANG=ON \
+    -DCMAKE_Fortran_COMPILER="/usr/local/llvm_1200/bin/flang" \
+    -DCMAKE_Fortran_COMPILER_ID=Flang \
     ../llvm && make -j${CPU} && sudo make install
 elif [ $OSNOW = "CENTOS" ]; then
   cmake -G Ninja -G "Unix Makefiles" \
@@ -98,8 +100,11 @@ elif [ $OSNOW = "CENTOS" ]; then
     -DCMAKE_CXX_COMPILER=$CXX \
     -DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lld;openmp" \
     -DCMAKE_BUILD_TYPE=RELEASE \
-    -DLLVM_TARGETS_TO_BUILD="ARM;AArch64" \
+    -DLLVM_TARGETS_TO_BUILD="AArch64" \
     -DCMAKE_INSTALL_PREFIX="/usr/local/llvm_1200" \
+    -DLLVM_ENABLE_CLASSIC_FLANG=ON \
+    -DCMAKE_Fortran_COMPILER="/usr/local/llvm_1200/bin/flang" \
+    -DCMAKE_Fortran_COMPILER_ID=Flang \
     ../llvm && make -j${CPU} && sudo make install
 else
   echo "please set right choise in OS=$OSNOW.."
