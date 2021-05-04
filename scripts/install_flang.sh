@@ -15,35 +15,6 @@ sudo /usr/sbin/nvpmodel -m 2
 sudo /usr/sbin/nvpmodel -d cool
 sudo /usr/sbin/nvpmodel -q
 
-
-# ------------------------
-# check your clang version
-# ------------------------
-which clang
-ret=$?
-if [ $ret -eq 0 ]; then
-  CLANG_VERSION=$(clang --version | awk 'NR<2 { print $3 }' | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}')
-  if [ $CLANG_VERSION -ge "120000" ]; then
-    echo "You have already had clang-12.0.0 or later."
-    echo "Let's proceed flang build"
-  else
-    echo "You are asked to install LLVM 12.00 or later it is not target version=$CLANG_VERSION."
-    echo "Program exit"
-    exit
-  fi
-fi
-
-grep LLVM_DIR ${HOME}/.bashrc
-ret=$?
-if [ $ret -eq 1 ]; then
-  echo "\${LLVM_DIR} is not defined."
-  echo "Program exit"
-  exit
-fi
-
-export CXX=`which clang++`
-export CC=`which clang`
-
 # ---------------------------
 # Confirm which OS you are in 
 # ---------------------------
@@ -83,12 +54,13 @@ fi
 # ---------------------------------------
 #INSTALL_PREFIX=${LLVM_DIR}
 cd ${HOME}/tmp
-INSTALL_PREFIX=`pwd`/install
+INSTALL_PREFIX="/usr/local/flang_20210324"
 
 if [ ! -d ${INSTALL_PREFIX} ]; then 
   echo "Path \$INSTALL_PREFIX does not exist. "
   mkdir -p ${INSTALL_PREFIX}
 else
+  echo "clean up before installation."
   sudo rm -rf ${INSTALL_PREFIX}/*
 fi
 
@@ -153,12 +125,34 @@ $CMAKE_OPTIONS \
 make -j$CPU
 sudo make install
 
-echo "flang compile done."
-echo "Now you have flag under ${INSTALL_PREFIX}."
-echo "Now you have libpgmath.[so/a] under ${INSTALL_PREFIX}/lib."
-echo "Please check and try flang -help."
-echo ""
+#
+# post install processing
+#
+grep FLANG_DIR ${HOME}/.bashrc
+ret=$?
+if [ $ret -eq 1 ] && [ -d ${INSTALL_PREFIX} ]; then
+  echo "Updating ${HOME}/.bashrc"
+  echo "# " >> ${HOME}/.bashrc
+  echo "# flang setting for binary and LD_ & LIBRARY_PATH" >> ${HOME}/.bashrc
+  echo "export FLANG_DIR=${INSTALL_PREFIX}">> ${HOME}/.bashrc
+  echo "export PATH=\$PATH:\$FLANG_DIR/bin" >>  ${HOME}/.bashrc
+  echo "export LIBRARY_PATH=\$LIBRARY_PATH:\$FLANG_DIR/lib" >>  ${HOME}/.bashrc
+  echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:\$FLANG_DIR/lib" >>  ${HOME}/.bashrc
+  echo "# " >> ${HOME}/.bashrc
+  echo "# " >> ${HOME}/.bashrc
+fi
 
+if [ -d ${INSTALL_PREFIX} ]; then
+  echo "flang compile done."
+  echo "Now you have flag under ${INSTALL_PREFIX}."
+  echo "Now you have libpgmath.[so/a] under ${INSTALL_PREFIX}/lib."
+  echo "Please check and try flang -help."
+  echo ""
+else
+  echo "[WARNING]"
+  echo "flag installation is fail. Check logs."
+  echo ""
+fi
 date
 
 echo "install_flang.sh completed."
