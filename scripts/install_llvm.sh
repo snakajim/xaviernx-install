@@ -90,9 +90,6 @@ if [ $OSNOW = "UBUNTU" ] ||  [ $OSNOW = "DEBIAN" ]; then
     -DCMAKE_BUILD_TYPE=RELEASE \
     -DLLVM_TARGETS_TO_BUILD="AArch64" \
     -DCMAKE_INSTALL_PREFIX="/usr/local/llvm_1200" \
-    -DLLVM_ENABLE_CLASSIC_FLANG=ON \
-    -DCMAKE_Fortran_COMPILER="/usr/local/llvm_1200/bin/flang" \
-    -DCMAKE_Fortran_COMPILER_ID=Flang \
     ../llvm && make -j${CPU} && sudo make install
 elif [ $OSNOW = "CENTOS" ]; then
   cmake -G Ninja -G "Unix Makefiles" \
@@ -102,9 +99,6 @@ elif [ $OSNOW = "CENTOS" ]; then
     -DCMAKE_BUILD_TYPE=RELEASE \
     -DLLVM_TARGETS_TO_BUILD="AArch64" \
     -DCMAKE_INSTALL_PREFIX="/usr/local/llvm_1200" \
-    -DLLVM_ENABLE_CLASSIC_FLANG=ON \
-    -DCMAKE_Fortran_COMPILER="/usr/local/llvm_1200/bin/flang" \
-    -DCMAKE_Fortran_COMPILER_ID=Flang \
     ../llvm && make -j${CPU} && sudo make install
 else
   echo "please set right choise in OS=$OSNOW.."
@@ -126,6 +120,8 @@ if [ $ret -eq 1 ] && [ -d /usr/local/llvm_1200/bin ]; then
   echo "export PATH=\$LLVM_DIR/bin:\$PATH" >>  ${HOME}/.bashrc
   echo "export LIBRARY_PATH=\$LLVM_DIR/lib:\$LIBRARY_PATH" >>  ${HOME}/.bashrc
   echo "export LD_LIBRARY_PATH=\$LLVM_DIR/lib:\$LD_LIBRARY_PATH" >>  ${HOME}/.bashrc
+  echo "# " >> ${HOME}/.bashrc
+  echo "# " >> ${HOME}/.bashrc
 fi
 
 if [ -f /usr/local/llvm_1200/bin/lld ]; then
